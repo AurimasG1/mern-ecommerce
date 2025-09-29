@@ -61,6 +61,10 @@ export const useCartStore = create((set, get) => ({
 			get().calculateTotals();
 			toast.success('Product added to cart', { id: 'quantity' });
 		} catch (error) {
+			if (error.response?.status === 401) {
+				toast.error('Please log in to add items to your cart.');
+				return; // stop further execution
+			}
 			// Normalize error message
 			const message =
 				error?.response?.data?.message || // server provided
