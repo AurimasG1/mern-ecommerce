@@ -41,10 +41,10 @@ const FeaturedProducts = ({ featuredProducts }) => {
     const isEndDisabled = featuredProducts.length <= itemsPerPage || currentIndex >= featuredProducts.length - itemsPerPage;
 
     const handleAddToCart = (product) => {
-        if (!user) {
-            toast.error('You must log in to add items to your cart.');
-            return;
-        }
+        // if (!user) {
+        //     toast.error('You must log in to add items to your cart.');
+        //     return;
+        // }
         addToCart(product);
     };
 
