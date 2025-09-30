@@ -29,6 +29,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
             setCurrentIndex(Math.max(featuredProducts.length - itemsPerPage, 0));
         }
     }, [itemsPerPage, featuredProducts.length]);
+
     const nextSlide = () => {
         setCurrentIndex(prev => Math.min(prev + itemsPerPage, featuredProducts.length - itemsPerPage));
     };

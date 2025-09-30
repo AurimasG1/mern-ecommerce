@@ -78,7 +78,8 @@ axios.interceptors.response.use(
 	response => response,
 	async error => {
 		const originalRequest = error.config;
-		if (error.response?.status === 401 && !originalRequest._retry) {
+		const { user } = useUserStore.getState();
+		if (error.response?.status === 401 && !originalRequest._retry && user) {
 			originalRequest._retry = true;
 
 			try {

@@ -21,6 +21,8 @@ const CreateProductForm = () => {
         isFeatured: false,
     });
 
+    const [imageInputMode, setImageInputMode] = useState('upload');
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -172,24 +174,86 @@ const CreateProductForm = () => {
                         className="h-4 w-4 text-emerald-500 border-gray-600 rounded focus:ring-emerald-500"
                     />
                 </div>
-                <div className='mt-1 flex items-center'>
-                    <input type='file' id='image' ref={fileInputRef} className='sr-only' accept='image/*' onChange={handleImageChange} />
-                    <label
-                        htmlFor='image'
-                        className='cursor-pointer bg-gray-700 py-2 px-3 border border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500'
-                    >
-                        <Upload className='h-5 w-5 inline-block mr-2' />
-                        Upload Image
+                <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                        Add an image
                     </label>
-                    {newProduct.image &&
-                        <>
-                            <span className='ml-3 text-sm text-gray-400'>Image uploaded </span>
-                            <button type='button' onClick={handleCancelImage} className='ml-3 text-sm text-red-400 hover:Text-red-600'>
-                                Cancel
-                            </button>
-                        </>
-                    }
+                    <div className="flex space-x-4">
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                                type="radio"
+                                name="imageMode"
+                                value="upload"
+                                checked={imageInputMode === "upload"}
+                                onChange={() => {
+                                    setImageInputMode("upload");
+                                    setNewProduct({ ...newProduct, image: "" });
+                                }}
+                            />
+                            <span className="text-gray-300">Upload</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                                type="radio"
+                                name="imageMode"
+                                value="link"
+                                checked={imageInputMode === "link"}
+                                onChange={() => {
+                                    setImageInputMode("link");
+                                    setNewProduct({ ...newProduct, image: "" });
+                                }}
+                            />
+                            <span className="text-gray-300">Link</span>
+                        </label>
+                    </div>
                 </div>
+                {imageInputMode === "upload" ? (
+                    <div className="mt-1 flex items-center">
+                        <input
+                            type="file"
+                            id="image"
+                            ref={fileInputRef}
+                            className="sr-only"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        <label
+                            htmlFor="image"
+                            className="cursor-pointer bg-gray-700 py-2 px-3 border border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                        >
+                            <Upload className="h-5 w-5 inline-block mr-2" />
+                            Upload Image
+                        </label>
+                        {newProduct.image && (
+                            <>
+                                <span className="ml-3 text-sm text-gray-400">Image uploaded</span>
+                                <button
+                                    type="button"
+                                    onClick={handleCancelImage}
+                                    className="ml-3 text-sm text-red-400 hover:text-red-600"
+                                >
+                                    Cancel
+                                </button>
+                            </>
+                        )}
+                    </div>
+                ) : (
+                    <div>
+                        <label htmlFor="imageLink" className="block text-sm font-medium text-gray-300">
+                            Image URL
+                        </label>
+                        <input
+                            type="url"
+                            id="imageLink"
+                            name="imageLink"
+                            value={newProduct.image}
+                            onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+                            placeholder="https://example.com/image.jpg"
+                            className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        />
+                    </div>
+                )}
+
                 <button
                     type='submit'
                     className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md 

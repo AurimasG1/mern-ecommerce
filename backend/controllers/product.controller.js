@@ -93,7 +93,13 @@ export const deleteProduct = async (req, res) => {
 			}
 		}
 
+		// Delete product from DB
 		await Product.findByIdAndDelete(req.params.id);
+
+		// Refresh featured products cache if the deleted one was featured
+		if (product.isFeatured) {
+			await updateFeatureProductsCache();
+		}
 
 		res.json({ message: 'Product deleted succesfully' });
 	} catch (error) {
